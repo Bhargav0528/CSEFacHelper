@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="Poi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/commons-codec-1.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/commons-collections4-4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/commons-compress-1.18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/curvesapi-1.05.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/ooxml-schemas-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-examples-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-excelant-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-ooxml-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-ooxml-schemas-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/poi-scratchpad-4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/Poi/xmlbeans-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/poi-ooxml-3.15.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/org.apache.poi.xwpf.converter.pdf-1.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/itext-2.1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/org.apache.poi.xwpf.converter.core-1.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/fr.opensagres.xdocreport.itext.extension-2.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

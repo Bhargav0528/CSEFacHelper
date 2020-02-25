@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="outerscreen" style="-fx-background-color: #6464a5;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Attendance">
+   <children>
+      <AnchorPane fx:id="ap_attendance" layoutY="-1.0" style="-fx-background-color: #6464a5;">
+         <children>
+            <AnchorPane fx:id="innerscreen" layoutX="-12.0" layoutY="6.0">
+               <children>
+                  <HBox fx:id="gianthbox" spacing="20.0">
+                     <children>
+                        <VBox fx:id="leftvbox" spacing="10.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="105.0" prefWidth="432.0" style="-fx-background-color: #f3e96b;" text="FACHELPER" textFill="#6464a5">
+                                 <font>
+                                    <Font name="System Bold" size="32.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="in1" prefHeight="9.0" prefWidth="430.0" text="Label">
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Label>
+                              <TitledPane fx:id="titlelabs" animated="false" text="Lab Batches">
+                                <content>
+                                  <AnchorPane fx:id="anchorlabs" minHeight="0.0" minWidth="0.0">
+                                       <children>
+                                          <CheckBox fx:id="lab_selector" layoutX="33.0" layoutY="3.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="258.0" text="Current Subject - Lab" />
+                                          <HBox layoutX="31.0" layoutY="48.0" prefHeight="39.0" prefWidth="343.0">
+                                             <children>
+                                                <Label prefHeight="30.0" prefWidth="91.0" text="Batch 1" />
+                                                <TextField fx:id="batch1" prefHeight="31.0" prefWidth="256.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="30.0" layoutY="92.0" prefHeight="39.0" prefWidth="343.0">
+                                             <children>
+                                                <Label prefHeight="30.0" prefWidth="91.0" text="Batch 2" />
+                                                <TextField fx:id="batch2" prefHeight="31.0" prefWidth="256.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="32.0" layoutY="134.0" prefHeight="39.0" prefWidth="343.0">
+                                             <children>
+                                                <Label prefHeight="30.0" prefWidth="91.0" text="Batch 3" />
+                                                <TextField fx:id="batch3" prefHeight="31.0" prefWidth="256.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                              <AnchorPane fx:id="anchorspecial">
+                                 <children>
+                                    <ListView fx:id="special_case_lv" editable="true" layoutX="1.0" layoutY="-3.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                        <StackPane fx:id="stack">
+                           <children>
+                              <TableView fx:id="table" />
+                           </children>
+                        </StackPane>
+                        <VBox fx:id="utility_attend" prefHeight="1117.0" prefWidth="597.0">
+                           <children>
+                              <TitledPane animated="false" prefHeight="619.0" prefWidth="597.0" style="-fx-background-color: #40c4ff;" text="SPREADSHEET">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="595.0">
+                                       <children>
+                                          <AnchorPane layoutX="-1.0" prefHeight="587.0" prefWidth="596.0">
+                                             <children>
+                                                <VBox prefHeight="583.0" prefWidth="596.0">
+                                                   <children>
+                                                      <Button fx:id="loadspbtn" mnemonicParsing="false" onAction="#loadAttendance" styleClass="hover-main" text="Load Spreadsheet" />
+                                                      <Button fx:id="importAttendanceSheet" mnemonicParsing="false" onAction="#importAttendanceFile" styleClass="hover-main" text="Import Attendance" />
+                                                      <Button fx:id="savespbtn" mnemonicParsing="false" onAction="#saveAttendance" styleClass="hover-main" text="Save Spreadsheet" />
+                                                      <TitledPane fx:id="tpatt" prefHeight="297.0" prefWidth="525.0" text="ENTER DETAILS">
+                                                         <content>
+                                                            <VBox alignment="CENTER" prefHeight="369.0" prefWidth="523.0">
+                                                               <children>
+                                                                  <TextField fx:id="semester" prefHeight="34.0" prefWidth="491.0" promptText="Enter Semester" />
+                                                                  <TextField fx:id="section" prefHeight="37.0" prefWidth="491.0" promptText="Enter Section" />
+                                                                  <ComboBox fx:id="drop" prefHeight="35.0" prefWidth="440.0" promptText="Select Subject">
+                                                                     <VBox.margin>
+                                                                        <Insets right="127.0" />
+                                                                     </VBox.margin>
+                                                                  </ComboBox>
+                                                                  <TextField fx:id="addTotalClasses" prefHeight="30.0" prefWidth="491.0" promptText="Enter Total Number of Classes" />
+                                                                  <HBox prefHeight="100.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <AnchorPane fx:id="calendar" prefHeight="52.0" prefWidth="243.0" />
+                                                                        <Label fx:id="label" prefHeight="48.0" prefWidth="238.0" text="  DD/MM/YYYY">
+                                                                           <font>
+                                                                              <Font name="System Bold Italic" size="15.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </VBox>
+                                                         </content>
+                                                         <font>
+                                                            <Font name="Times New Roman Bold" size="20.0" />
+                                                         </font>
+                                                      </TitledPane>
+                                                      <TitledPane animated="false" prefHeight="286.0" prefWidth="597.0" text="SAVE ONLINE">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="595.0">
+                                                               <children>
+                                                                  <Button fx:id="savefir" layoutX="-5.0" layoutY="8.0" mnemonicParsing="false" onAction="#SaveFirebaseAttendance" styleClass="hover-main" text="Save" />
+                                                                  <Button fx:id="syncsave" layoutX="-4.0" layoutY="73.0" mnemonicParsing="false" onAction="#LoadFirebaseAttendance" styleClass="hover-main" text="Consolidate" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                         <font>
+                                                            <Font name="Times New Roman Bold" size="20.0" />
+                                                         </font>
+                                                      </TitledPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="20.0" />
+                                 </font>
+                              </TitledPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

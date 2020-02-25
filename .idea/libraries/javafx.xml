@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javafx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/javafx/jfxswt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

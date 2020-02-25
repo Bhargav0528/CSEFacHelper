@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Material">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Projects/STWorkbench/fontawesomefx-8.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

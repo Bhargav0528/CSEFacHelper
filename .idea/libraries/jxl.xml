@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jxl">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../CSEFacDependencies/External Dependencies/jxl/jxl-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
