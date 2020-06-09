@@ -141,7 +141,7 @@ public class Controller {
        table.getColumns().addAll(USNCol, NameCol, SpecialCaseCol);
        
        ObservableList<Integer> options = 
-       	    FXCollections.observableArrayList(1,2,3,4,5,6,7);
+       	    FXCollections.observableArrayList(1,2,3,4,5,6,7,8);
        
 	        c.getItems().addAll(options);
 	}

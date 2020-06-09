@@ -1,9 +1,11 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -61,7 +63,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import application.DashBoardController.Person;
+import application.MarksData;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -313,7 +315,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		     /*   cie150.setOnEditCommit(
+		        cie150.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -322,7 +324,7 @@ public class MarksController
 		        ).setVal1(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        
 		        
@@ -336,7 +338,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		        /*cie110.setOnEditCommit(
+		        cie110.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -345,7 +347,7 @@ public class MarksController
 		        ).setVal2(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        cie1Table.setEditable(true);
 		        cie1Table.setItems(cie1data);
@@ -363,7 +365,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		        /*cie250.setOnEditCommit(
+		        cie250.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -372,7 +374,7 @@ public class MarksController
 		        ).setVal1(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        
 		        
@@ -386,7 +388,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		        /*cie210.setOnEditCommit(
+		        cie210.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -395,7 +397,7 @@ public class MarksController
 		        ).setVal2(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        cie2Table.setEditable(true);
 		        cie2Table.setItems(cie2data);
@@ -413,7 +415,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		        /*cie350.setOnEditCommit(
+		        cie350.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -422,7 +424,7 @@ public class MarksController
 		        ).setVal1(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        
 		        
@@ -436,7 +438,7 @@ public class MarksController
 		                return new EditingCell();
 		            }
 		        });
-		        /*cie310.setOnEditCommit(
+		        cie310.setOnEditCommit(
 		        new EventHandler<CellEditEvent<Person, String>>() {
 		        @Override
 		        public void handle(CellEditEvent<Person, String> t) {
@@ -445,7 +447,7 @@ public class MarksController
 		        ).setVal2(t.getNewValue());
 		        }
 		        }
-		        );*/
+		        );
 		        
 		        cie3Table.setEditable(true);
 		        cie3Table.setItems(cie3data);
@@ -2119,6 +2121,39 @@ public class MarksController
 	  		cellno = cellno+2;
 	  	}*/
 	  	
+	  	int consolidateKey = 0;
+	  	
+	  	if(selectedCIErb.equals("CIE1"))
+		{
+	  		consolidateKey = 1;
+			
+		}
+		else if(selectedCIErb.equals("CIE2"))
+		{
+			consolidateKey = 2;
+		}
+		else if(selectedCIErb.equals("CIE3"))
+		{
+			consolidateKey = 3;
+		}
+		else if(selectedCIErb.equals("Assignment"))
+		{
+			consolidateKey = 4;
+		}
+		else if(selectedCIErb.equals("AAT"))
+		{
+			consolidateKey = 5;
+		}
+	  	
+	  	if(consolidateKey==0) {
+	  		Alert alerts=new Alert(AlertType.WARNING);
+	        alerts.setTitle("Warning Dialog");
+	        alerts.setHeaderText(null);
+	        alerts.setContentText("Kindly select the CIE");
+	        alerts.showAndWait();
+	        return;
+	  	}
+	  	
 	  	for(int i=0;i<names.size();i++)
 	  	{
 	  		XWPFTableRow r1 =  table.createRow();
@@ -2143,7 +2178,7 @@ public class MarksController
 			  		if((big.get(x).get(0).trim().equalsIgnoreCase(table.getRow(1).getCell(k+3).getText().toString().trim())))
 			  		{
 			  			//table.getRow(2).getCell(k+3).setText(String.valueOf(var));
-			  			table.getRow(i+2).getCell(k+3).setText(big.get(x+1).get(i).toString());
+			  			table.getRow(i+2).getCell(k+3).setText(big.get(x+consolidateKey).get(i).toString());
 			  			
 			  		}
 			  		
@@ -2160,6 +2195,32 @@ public class MarksController
 	  	FileOutputStream fileOut = new FileOutputStream(path);
         docX2.write(fileOut);
         fileOut.close();
+        
+			String rootpath = "C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\SDM";
+		      File myObj = new File(rootpath+"\\currentUser.txt");
+		      if (!myObj.createNewFile()) {
+		        System.out.println("File already exists.");
+		        Boolean flag = false;
+		        try {
+		        
+		        BufferedReader br = new BufferedReader(new FileReader(myObj)); 
+		        
+		        String st; 
+		        while ((st = br.readLine()) != null) {
+		          if(st.equals("admin@dsce.org")) {
+		        	  flag = true;
+		          } 
+		        }
+		        
+		        if(flag == false) {
+		            path.setReadOnly();
+		        }
+		        
+		        }catch (IOException e) {
+		        	e.printStackTrace();
+		        } 
+		      }
+
 		            
 	            System.out.println(".docx written successully");
 	              

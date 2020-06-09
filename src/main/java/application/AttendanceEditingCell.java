@@ -70,12 +70,8 @@ public class AttendanceEditingCell extends TableCell<Person, String> {
         textField.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent t) {
-                if (t.getCode().isDigitKey()) {
-                    if (CellField.isLessOrEqualOneSym()) {
-                        CellField.addSymbol(t.getText());
-                    } else {
-                        CellField.setText(textField.getText());
-                    }
+            	if (t.getCode().isDigitKey() || t.getCode().isLetterKey()) {
+                    CellField.setText(textField.getText());
                     textField.setText(CellField.getText());
                     textField.deselect();
                     textField.end();

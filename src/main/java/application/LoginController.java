@@ -135,7 +135,7 @@ public class LoginController {
     	
   
     	Stage primaryStage=new Stage();
-    	primaryStage.initStyle(StageStyle.UNDECORATED);
+    	//primaryStage.initStyle(StageStyle.UNDECORATED);
 		Parent root=FXMLLoader.load(getClass().getResource("Login.fxml"));
 		Scene scene = new Scene(root,800,600);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -231,7 +231,7 @@ public class LoginController {
     		      e.printStackTrace();
     		    }
     		Stage primaryStage=new Stage();
-    		primaryStage.initStyle(StageStyle.UNDECORATED);
+    		//primaryStage.initStyle(StageStyle.UNDECORATED);
     		Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("FrontEnd.fxml"));
     		Scene scene = new Scene(root,800,700);
     		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -454,7 +454,7 @@ catch (IOException e) {
     	 {
     		 	registerUser(e, p);
     		 	Stage primaryStage=new Stage();
-    		 	primaryStage.initStyle(StageStyle.UNDECORATED);
+    		 	//primaryStage.initStyle(StageStyle.UNDECORATED);
 				Parent root=FXMLLoader.load(getClass().getResource("SignUp.fxml.fxml"));
 				Scene scene = new Scene(root,800,600);
 				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

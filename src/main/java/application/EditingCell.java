@@ -1,6 +1,7 @@
 package application;
 
 import application.MarksController.Person;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
@@ -12,6 +13,16 @@ public class EditingCell extends TableCell<Person, String> {
     private TextField textField;
     @Override
     public void startEdit() {
+    	if (!isEmpty()) {
+            super.startEdit();
+            createTextField();
+            setText(null);
+            setGraphic(textField);
+            Platform.runLater(() -> {//without this space erases text, f2 doesn't
+                textField.requestFocus();//also selects
+            });
+            
+        }
         if (!isEmpty()) {
             super.startEdit();
             if (textField == null) {
@@ -70,12 +81,9 @@ public class EditingCell extends TableCell<Person, String> {
         textField.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent t) {
-                if (t.getCode().isDigitKey()) {
-                    if (CellField.isLessOrEqualOneSym()) {
-                        CellField.addSymbol(t.getText());
-                    } else {
+                if (t.getCode().isDigitKey() || t.getCode().isLetterKey()) {
                         CellField.setText(textField.getText());
-                    }
+                    
                     textField.setText(CellField.getText());
                     textField.deselect();
                     textField.end();

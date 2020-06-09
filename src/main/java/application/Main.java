@@ -100,7 +100,7 @@ public class Main extends Application {
 		      height = (height/100)*30;
 			
 			//primaryStage.setMaximized(true);
-		      primaryStage.initStyle(StageStyle.UNDECORATED);
+		     // primaryStage.initStyle(StageStyle.UNDECORATED);
 			Scene scene = new Scene(root,width,height);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);

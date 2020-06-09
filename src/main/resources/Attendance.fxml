@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="outerscreen" style="-fx-background-color: #6464a5;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Attendance">
+<AnchorPane fx:id="outerscreen" style="-fx-background-color: #6464a5;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Attendance">
    <children>
       <AnchorPane fx:id="ap_attendance" layoutY="-1.0" style="-fx-background-color: #6464a5;">
          <children>
@@ -36,8 +26,8 @@
                                  </font>
                               </Label>
                               <TitledPane fx:id="titlelabs" animated="false" text="Lab Batches">
-                                <content>
-                                  <AnchorPane fx:id="anchorlabs" minHeight="0.0" minWidth="0.0">
+                                 <content>
+                                    <AnchorPane fx:id="anchorlabs" minHeight="0.0" minWidth="0.0">
                                        <children>
                                           <CheckBox fx:id="lab_selector" layoutX="33.0" layoutY="3.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="258.0" text="Current Subject - Lab" />
                                           <HBox layoutX="31.0" layoutY="48.0" prefHeight="39.0" prefWidth="343.0">
@@ -60,7 +50,7 @@
                                           </HBox>
                                        </children>
                                     </AnchorPane>
-                                </content>
+                                 </content>
                               </TitledPane>
                               <AnchorPane fx:id="anchorspecial">
                                  <children>
@@ -80,7 +70,7 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="595.0">
                                        <children>
-                                          <AnchorPane layoutX="-1.0" prefHeight="587.0" prefWidth="596.0">
+                                          <AnchorPane layoutX="-1.0" prefHeight="653.0" prefWidth="596.0">
                                              <children>
                                                 <VBox prefHeight="583.0" prefWidth="596.0">
                                                    <children>
@@ -116,12 +106,13 @@
                                                             <Font name="Times New Roman Bold" size="20.0" />
                                                          </font>
                                                       </TitledPane>
-                                                      <TitledPane animated="false" prefHeight="286.0" prefWidth="597.0" text="SAVE ONLINE">
+                                                      <TitledPane animated="false" prefHeight="422.0" prefWidth="596.0" text="SAVE ONLINE">
                                                          <content>
-                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="595.0">
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="225.0" prefWidth="594.0">
                                                                <children>
-                                                                  <Button fx:id="savefir" layoutX="-5.0" layoutY="8.0" mnemonicParsing="false" onAction="#SaveFirebaseAttendance" styleClass="hover-main" text="Save" />
-                                                                  <Button fx:id="syncsave" layoutX="-4.0" layoutY="73.0" mnemonicParsing="false" onAction="#LoadFirebaseAttendance" styleClass="hover-main" text="Consolidate" />
+                                                                  <Button fx:id="savefir" mnemonicParsing="false" onAction="#SaveFirebaseAttendance" prefHeight="17.0" prefWidth="191.0" styleClass="hover-main" text="Save" />
+                                                                  <Button fx:id="syncsave" layoutY="64.0" mnemonicParsing="false" onAction="#LoadFirebaseAttendance" styleClass="hover-main" text="Consolidate" />
+                                                                  <Button fx:id="loadAttendanceFromDbBtn" layoutX="13.0" layoutY="122.0" mnemonicParsing="false" onAction="#loadAttendanceFromDB" prefHeight="31.0" prefWidth="127.0" styleClass="hover-main" text="Load Online" />
                                                                </children>
                                                             </AnchorPane>
                                                          </content>

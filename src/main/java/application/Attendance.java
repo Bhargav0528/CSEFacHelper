@@ -1,9 +1,12 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -69,9 +72,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -105,13 +111,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 public class Attendance 
 {
+
+	Logger logger = LoggerFactory.getLogger("Attendance");
+
 	public static String in= "INSTRUCTIONS  FOR USAGE:\r\n" + 
 			"\r\n" + 
 			"  #TO LOAD A SPREADSHEET: \r\n" + 
@@ -221,7 +235,7 @@ public class Attendance
 	    AnchorPane ap_calendar;
 	    
 	    @FXML
-		Button savespbtn,loadspbtn, savefir, syncsave;
+		Button savespbtn,loadspbtn, savefir, syncsave, loadAttendanceFromDbBtn;
 	    
 	    @FXML
 	    ComboBox drop = new ComboBox();
@@ -343,7 +357,7 @@ public class Attendance
 		    	        } 
 		    	        	else
 			    	        {
-		    	        					setStyle("-fx-background-color: #fff;");
+		    	        					setStyle("-fx-background-color: #a1a1a1;");
 			    	        }
 		    	        	
 		    	        	}
@@ -681,6 +695,10 @@ public class Attendance
 		      		
 		      		smol = new ArrayList<String>();
 		      		smol.addAll(Arrays.asList(fir.getPerc().split(",")));
+		      		big.add(smol);
+		      		
+		      		smol = new ArrayList<String>();
+		      		smol.add(fir.getTotalClasses());
 		      		big.add(smol);
 		      		
 		      		//smol = new ArrayList<String>();
@@ -1293,6 +1311,125 @@ public class Attendance
 		
 	}
 
+	public void showAlert(String content) {
+		Alert alerts=new Alert(AlertType.INFORMATION);
+		alerts.setTitle("Information Dialog");
+		alerts.setHeaderText(null);
+		alerts.setContentText(content);
+		alerts.showAndWait();
+	}
+
+	public void loadAttendanceFromDB(ActionEvent e) throws IOException {
+		labBatch.clear();
+		special_case_lv.getItems().clear();
+		semester.setVisible(true);
+		batch.setVisible(true);
+		section.setVisible(true);
+		perCol.setVisible(false);
+		list.setVisible(true);
+		list.setEditable(true);
+		usnCol1.setVisible(true);
+		nameCol1.setVisible(true);
+		classesCol.setVisible(true);
+
+		table.getColumns().clear();
+		table.getColumns().addAll(usnCol1, nameCol1, classesCol, perCol);
+		table.setItems(data);
+		data.clear();
+		table.setItems(data);
+
+		tfsem = semester.getText().toString();
+		tfsec = section.getText().toString().toUpperCase();
+		String sub = drop.getSelectionModel().getSelectedItem().toString().toUpperCase().trim();
+
+		if(tfsem.trim().equals("") || !tfsem.matches("[0-9]")) {
+			showAlert("Please check the semester");
+		}
+
+		if(tfsec.trim().equals("") || !tfsec.matches("[A-Za-z]")) {
+			showAlert("Please check the section");
+		}
+
+		Map <String, String> attendanceMap = new HashMap<String, String>();
+
+		try {
+			final CountDownLatch latch1 = new CountDownLatch(1);
+			DatabaseReference classAttendanceReference =
+					FirebaseDatabase.getInstance().getReference().child("Attendance/"+tfsem+"/"+tfsec+"/"+sub);
+
+			classAttendanceReference.addListenerForSingleValueEvent(
+					new ValueEventListener() {
+						public void onDataChange(DataSnapshot dataSnapshot) {
+							for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+								attendanceMap.put(dsp.getKey(), dsp.getValue(String.class));
+							}
+							latch1.countDown();
+						}
+						public void onCancelled(DatabaseError error) {
+							latch1.countDown();
+						}
+					});
+			latch1.await();
+		}
+		catch (InterruptedException en) {
+			en.printStackTrace();
+		}
+
+		logger.info(attendanceMap.get("att").toString());
+		if(!attendanceMap.containsKey("att")) {
+			return;
+		}
+
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\SDM\\Attendance\\"+tfsem+tfsec+".xls");
+		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFRow row;
+
+		ArrayList<String> attendance = new ArrayList<String>(Arrays.asList(attendanceMap.get("att").split(",")));
+		ArrayList<String> percentage = new ArrayList<String>(Arrays.asList(attendanceMap.get("perc").split(",")));
+		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> usns = new ArrayList<String>();
+
+		List<HBoxCell> list = new ArrayList<>();
+		for(int i=5;i<sheet.getPhysicalNumberOfRows();i++) {
+			names.add(sheet.getRow(i).getCell(1).toString());
+			usns.add(sheet.getRow(i).getCell(0).toString());
+			if(sheet.getRow(i).getCell(4).getStringCellValue().equals("true"))
+				list.add(new HBoxCell(sheet.getRow(i).getCell(0).getStringCellValue(), "" ));
+			try {
+				labBatch.add(sheet.getRow(i).getCell(5).getStringCellValue());
+			} catch(NullPointerException nullex) {
+				nullex.printStackTrace();
+			}
+		}
+		wb.close();
+		ObservableList<HBoxCell> myObservableList = FXCollections.observableList(list);
+		special_case_lv.setItems(myObservableList);
+
+		logger.info(names.toString());
+		logger.info(attendance.toString());
+
+		for(int i=0; i<usns.size();i++) {
+			if(i<attendance.size()){
+				data.add(new Person(
+						usns.get(i),
+						names.get(i),
+						attendance.get(i),
+						percentage.get(i)
+				));
+			} else {
+				data.add(new Person(
+						usns.get(i),
+						names.get(i),
+						"",
+						""
+				));
+			}
+		}
+		logger.info(data.get(0).getClasses().toString());
+		table.setItems(data);
+	}
+
 	public void combine( ArrayList<ArrayList<String>> big, String sem, String sec) throws IOException
 	{
 		 String directoryName=rootpath+"Consolidated";
@@ -1585,11 +1722,27 @@ public class Attendance
 	  	run9.setBold(true);run9.setText("Classes Conducted ->");run9.setFontSize(10);
 	  	cel.removeParagraph(0);
 	  	int y=0;
-        
+        int totalClasses = 3;
+        int subjectCounter = 0;
+        int v = 0;
 	  	for(int i = 0;i<subs.length;i++)
 	  	{
 	  		XWPFTableCell cell22=tableRowOne1.createCell();
-		  	//cell22.setText("ba");
+	  			try {
+	  			System.out.println(table.getRow(1).getCell(v+3).getText().toString()+"THis one");
+	  	        subjectCounter = 0;
+	  			while(subjectCounter<big.size()) {
+	  				if((big.get(subjectCounter).get(0).trim().equalsIgnoreCase(table.getRow(1).getCell(v+3).getText().toString().trim())))	
+	  				{
+	  					System.out.println(big.get(subjectCounter+3)+"this sub");
+	  					cell22.setText(big.get(subjectCounter+3).get(0));
+  					}
+	  				subjectCounter+=4;
+	  			}
+	  			} catch(Exception e) {
+	  				e.printStackTrace();
+	  			}
+		  	v+=2;
 		  	CTTcPr tcpr20 = cell22.getCTTc().addNewTcPr();
 		  	CTHMerge vMerge20=tcpr20.addNewHMerge();
 		  	vMerge20.setVal(STMerge.RESTART); 
@@ -1708,10 +1861,12 @@ public class Attendance
 	  			//for(int m = 0; m<big.size();  m++)
 	  		//	System.out.println(big.get(m));
 	  			
-	  			for(int x=0; x < big.size(); x=x+3)
-		  		{
+	  			for(int x=0; x < big.size(); x=x+4)
+		  		{	System.out.println(big.get(x).get(0).trim()+"  "+table.getRow(1).getCell(k+3).getText().toString().trim() );
+	  			
 			  		if((big.get(x).get(0).trim().equalsIgnoreCase(table.getRow(1).getCell(k+3).getText().toString().trim())))
 			  		{
+			  			System.out.println(big.get(x).get(0).trim()+"  "+table.getRow(1).getCell(k+3).getText().toString().trim() );
 			  			//table.getRow(2).getCell(k+3).setText(String.valueOf(var));
 			  			table.getRow(i+4).getCell(k+3).setText(big.get(x+1).get(i).toString());
 			  			
@@ -1766,7 +1921,32 @@ public class Attendance
         InputStream doc = new FileInputStream(path);
         XWPFDocument document = new XWPFDocument(doc);
         
-        path.setReadOnly();
+
+			String rootpath = "C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\SDM";
+		      File myObj = new File(rootpath+"\\currentUser.txt");
+		      if (!myObj.createNewFile()) {
+		        System.out.println("File already exists.");
+		        Boolean flag = false;
+		        try {
+		        
+		        BufferedReader br = new BufferedReader(new FileReader(myObj)); 
+		        
+		        String st; 
+		        while ((st = br.readLine()) != null) {
+		          if(st.equals("admin@dsce.org")) {
+		        	  flag = true;
+		          } 
+		        }
+		        
+		        if(flag == false) {
+		            path.setReadOnly();
+		        }
+		        
+		        }catch (IOException e) {
+		        	e.printStackTrace();
+		        } 
+		      }
+
        // PdfOptions options = PdfOptions.create();
         //out = new FileOutputStream(new File("C:\\Users\\"+System.getProperty("user.name")+"\\Documents\\SDM\\Attendance\\Consolidated\\"+sem+sec+"\\"+sem+sec+"consolidated["+finalDate+"].pdf"));
         //PdfConverter.getInstance().convert(document, out, options);
@@ -1814,6 +1994,7 @@ public class Attendance
 	        loadspbtn.setPrefWidth(utilsize);
 	        savefir.setPrefWidth(utilsize);
 	        syncsave.setPrefWidth(utilsize);
+	        loadAttendanceFromDbBtn.setPrefWidth(utilsize);
 	        addTotalClasses.setPrefWidth(utilsize);
 	        
 	        
